@@ -110,22 +110,22 @@ verify_user(UserName, Password, ldap, _, #base_state{chef_db_context = Ctx}) ->
         {error, connection} ->
             {false, 504};
         {error, unauthorized} ->
-            {false, 401};
-        {_ChefUid, AuthUserEJ} ->
-            ExtAuthUid = ej:get({<<"external_authentication_uid">>}, AuthUserEJ),
-            case chef_db:fetch(#chef_user{external_authentication_uid = ext_auth_id(ExtAuthUid)}, Ctx) of
-                not_found ->
-                    user_json(<<"unlinked">>, AuthUserEJ);
-                User = #chef_user{} ->
-                    user_json(<<"linked">>, User)
-            end
+            {false, 401}%;
+%        {_ChefUid, AuthUserEJ} ->
+%            ExtAuthUid = ej:get({<<"external_authentication_uid">>}, AuthUserEJ),
+%            case chef_db:fetch(#chef_user{external_authentication_uid = ext_auth_id(ExtAuthUid)}, Ctx) of
+%                not_found ->
+%                    user_json(<<"unlinked">>, AuthUserEJ);
+%                User = #chef_user{} ->
+%                    user_json(<<"linked">>, User)
+%            end
     end.
 
-ext_auth_id(Id) when Id == undefined;
-                     Id == null ->
-    <<"">>;
-ext_auth_id(Id) ->
-    Id.
+%ext_auth_id(Id) when Id == undefined;
+%                     Id == null ->
+%    <<"">>;
+%ext_auth_id(Id) ->
+%    Id.
 
 maybe_upgrade_password(Password, User, #base_state{requestor_id = Requestor, chef_db_context = Ctx}) ->
     PasswordData = chef_user:password_data(User),
