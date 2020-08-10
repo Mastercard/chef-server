@@ -211,26 +211,26 @@ check_current_queue_length(PoolNameAtom, Vhost, Queue, MaxLength, DroppedSinceLa
             % a queue doesn't appear to be bound to the
             % exchange. The only thing we can do is reset the
             % dropped_since_last_check value to 0
-            {MaxLength, reset_dropped_since_last_check};
-        N ->
-                lager:info("Queue Monitor current length = ~p for VHost ~p and Queue ~p", [N, Vhost, Queue]),
-                QueueAtCapacity = CurrentLength == MaxLength,
-                {Ratio, Pcnt} = chef_wm_rabbitmq_management:calc_ratio_and_percent(CurrentLength, MaxLength),
-                case Ratio >= ?LOG_THRESHOLD of
-                    true ->
-                        lager:warning("Queue Monitor has detected RabbitMQ for VHost ~p, queue ~p capacity at ~p%",
-                                      [Vhost, Queue, Pcnt]);
-                    false -> ok
-                end,
-                case QueueAtCapacity of
-                    true ->
-                        lager:warning("Queue Monitor has dropped ~p messages for VHost ~p, queue ~p since last check due to queue limit exceeded",
-                                        [DroppedSinceLastCheck, Vhost, Queue]);
-                    false -> ok
-                end,
-                % successfully checked max length and current length
-                % update the state of the gen_server
-                {MaxLength, N, QueueAtCapacity}
+            {MaxLength, reset_dropped_since_last_check}%;
+        %N ->
+        %        lager:info("Queue Monitor current length = ~p for VHost ~p and Queue ~p", [N, Vhost, Queue]),
+        %        QueueAtCapacity = CurrentLength == MaxLength,
+        %        {Ratio, Pcnt} = chef_wm_rabbitmq_management:calc_ratio_and_percent(CurrentLength, MaxLength),
+        %        case Ratio >= ?LOG_THRESHOLD of
+        %            true ->
+        %                lager:warning("Queue Monitor has detected RabbitMQ for VHost ~p, queue ~p capacity at ~p%",
+        %                              [Vhost, Queue, Pcnt]);
+        %            false -> ok
+        %        end,
+        %        case QueueAtCapacity of
+        %            true ->
+        %                lager:warning("Queue Monitor has dropped ~p messages for VHost ~p, queue ~p since last check due to queue limit exceeded",
+        %                                [DroppedSinceLastCheck, Vhost, Queue]);
+        %            false -> ok
+        %        end,
+        %        % successfully checked max length and current length
+        %        % update the state of the gen_server
+        %        {MaxLength, N, QueueAtCapacity}
     end.
 
 
