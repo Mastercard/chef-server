@@ -51,6 +51,7 @@ acl_checks() ->
     fun check_admins_group_removal_from_grant_ace/5
   ].
 
+-dialyzer({nowarn_function, check_admins_group_removal_from_grant_ace/5}).
 
 -spec check_admins_group_removal_from_grant_ace(binary(), binary(), atom(), binary(), tuple())
       -> error | false | {true, attempted_admin_group_removal_grant_ace}.
