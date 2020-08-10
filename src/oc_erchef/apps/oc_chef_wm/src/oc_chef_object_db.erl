@@ -109,7 +109,7 @@ delete_from_db(DbContext, RequestorId, ObjectRec) ->
       Object :: delete_type(),
       RequestorId :: object_id().
 %% Some Chef objects do not have an authz id (data_bag_items) and some (cookbook_versions)
-%% share an authz id (cookbook). This code determins when the parent authz id should be
+%% share an authz id (cookbook). This code determines when the parent authz id should be
 %% deleted. For data_bag_items, never as data_bags are deleted directly by the API. For
 %% cookbook_version objects, we delete the associated cookbook authz id when the the
 %% cookbook_version is the last of the named cookbook.
