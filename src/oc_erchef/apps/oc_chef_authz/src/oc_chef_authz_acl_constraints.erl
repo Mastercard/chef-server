@@ -62,15 +62,18 @@ check_admins_group_removal_from_grant_ace(OrgId, AuthzId, Type, AclPerm, NewAce)
   %% the admin group will never be able to be removed.
   case AclPerm of
     <<"grant">> ->
-      NewGroups = extract_acl_groups(AclPerm, NewAce),
-      CurrentAce = oc_chef_authz_acl:fetch(Type, OrgId, AuthzId),
-      CurrentGroups = extract_acl_groups(AclPerm, CurrentAce),
-      case check_admins_group_removal(CurrentGroups, NewGroups) of
-        not_removed ->
-          false;
-        removed ->
-          {true, attempted_admin_group_removal_grant_ace}
-      end;
+        NewGroups = extract_acl_groups(AclPerm, NewAce),
+        case CurrentAce = oc_chef_authz_acl:fetch(Type, OrgId, AuthzId) of
+            {error, _} -> error;
+            _ ->
+                CurrentGroups = extract_acl_groups(AclPerm, CurrentAce),
+                case check_admins_group_removal(CurrentGroups, NewGroups) of
+                  not_removed ->
+                    false;
+                  removed ->
+                    {true, attempted_admin_group_removal_grant_ace}
+                end
+        end;
     _Other ->
       %% Needs to return false here, which means all is okay, so this can
       %% work when called within lists:filtermap
