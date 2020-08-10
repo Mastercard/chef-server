@@ -180,7 +180,7 @@ sync_check_queue_at_capacity(PoolNameAtom, Vhost, Queue) ->
     end.
 
 
-
+-dialyzer({nowarn_function, check_current_queue_state/4}).
 -spec check_current_queue_state(atom(), string(), string(), integer()) ->
                                                 skipped |
                                                 {max_length(), reset_dropped_since_last_check} |
